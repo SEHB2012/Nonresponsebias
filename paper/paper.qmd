@@ -1,0 +1,79 @@
+---
+title: "Reflection on Issues of Virtual Nonresponse Rates and Nonresponse Bias"
+subtitle: "Current Issue of Modern Survey Statistics"
+author: 
+  - Mingjia Chen
+thanks: "Code and data are available at: https://github.com/MjChen120/INF312Tutorial8.git"
+date: today
+date-format: long
+format: pdf
+number-sections: true
+bibliography: references.bib
+---
+
+```{r}
+#| include: false
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(knitr)
+library(dplyr)
+library(ggplot2)
+```
+
+# Introduction
+Questionnaires or surveys are among the most common methods of data collection in statistical research studies. Sometimes, in order to detect possible patterns, errors, and biases, researchers collect responses from participants more than once. One of the common challenges researchers usually encounter is the non-response rate. As my group members and I discovered during second paper when attempting to replicate the research paper by @feldman, we found a high portion of responses to be null during the second data collection period (@fig-decline-response). This indicates a relatively high non-response rate.
+
+To connect the non-response rate aspect of the editorial "Special Virtual Issue on Nonresponse Rates and Nonresponse Adjustments" [@OxfordAcademic] with Feldman and their colleagues’ paper [@feldman], the statistical programming language `R` [@citeR] with libraries `tidyverse` [@tidyverse], `dplyr` [@dplyr], `knitr` [@knitr], and `ggplot2` [@ggplot2] are used for the purpose of this short writing.
+
+```{r}
+#| label: fig-decline-response
+#| fig-cap: Descriptive summary of Job Satisfaction Likert Scale Responses
+#| fig-subcap: ["Job Satisfaction (T1)","Job Satisfaction (T2)"]
+#| layout-ncol: 2
+#| echo: false
+#| warning: false
+#| message: false
+
+data_freq <- read.csv(here::here("data/analysis_data/jobsatT1_data_freq.csv"))           
+# Create the bar chart
+ggplot(data_freq, aes(x = Question, y = Percent, fill = factor(Response))) +
+  geom_bar(stat = "identity") +
+  scale_fill_brewer(palette = "Blues", name = "Response") +
+  labs(x = "Question", y = "Percentage",caption = "Note. 1 = strongly disagree, 7 = strongly agree") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+data2_freq <- read.csv(here::here("data/analysis_data/jobsatT2_data_freq.csv")) 
+# Create the bar chart
+ggplot(data2_freq, aes(x = Question, y = Percent, fill = factor(Response))) +
+  geom_bar(stat = "identity") +
+  scale_fill_brewer(palette = "Blues", name = "Response") +
+  labs(x = "Question", y = "Percentage",caption = "Note. 1 = strongly disagree, 7 = strongly agree") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+```
+
+\break
+
+According to @Williams_Brick_2018, response rates are falling across all modes of data collection overall. Response rates to web modes, as reported in the study, are lower than those for other modes of data collection. The paper also suggests that this trend will likely continue through 2022 and beyond. Since the data set for Study 2 of @feldman was collected by using an online survey for workers on the diverse online labor market MTurk, the trend we detected in terms of the decrease in response rate at the second round of response collection could be explained by the fact that the response rates declining, especially online, for the recent years.
+
+Although the non-responsive rate declines significantly in online data collecting, are there any other possible factors that contributes to the low response rates?
+
+# Nonresponse bias
+
+The result of Groves and Peytcheva's research [@nonresponseBias] shows that low response rates are not necessarily associated with non-response bias. Non-responsive bias occurs when participants are unwilling or unable to respond to some survey questions or an entire survey. Low response rates in selected sub domains, although association does not always hold, are usually used as indicators of systematic differences between participants who responded and who did not on key estimates [@nonresponseBias]. 
+
+From the result from @nonresponseBias, we could hypothesize that the increase in non-response rate indicate a systematic difference between the respondents and non-respondents. For instance, some workers could stopped using MTurk by the time Feldman and their colleague started second round of surveys. The systematic difference could be that some of the workers no longer used the platform due to the fact that they did not find it useful.  
+
+# Conclusion
+
+In conclusion, I have connected the trend of declining survey response rates observed in Feldman et al.'s paper [@feldman] to the issues of low non-response rates and nonresponse bias discussed in the editorial "Special Virtual Issue on Nonresponse Rates and Nonresponse Adjustments" [@OxfordAcademic]. This editorial sheds light on aspects that could potentially explain the trend observed when analyzing the responses collected by Feldman and their colleagues [@feldman] during two time waves. This connection establishes a basis for future research endeavors aimed at exploring the systematic differences between respondents and non-respondents to determine if such distinctions could influence job satisfaction.
+
+\newpage
+
+# References
+
+
