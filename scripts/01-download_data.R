@@ -1,8 +1,8 @@
 #### Preamble ####
 # Purpose: Dataset Downloading for research
-# Author: Mingjia Chen, Hadi Ahmad, Tianen (Evan) Hao
+# Author: Mingjia Chen, Hadi Ahmad, AGAIN (Evan) Hao
 # Date: 17 February 2024 
-# Contact: mingjia.chen@mail.utoronto.ca 
+# Contact: checking@mail.utoronto.ca 
 # License: MIT
 # Pre-requisites: none
 
