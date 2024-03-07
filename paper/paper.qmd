@@ -1,5 +1,5 @@
 ---
-title: "How reducing Nonresponse Rates shape survey outcomes"
+title: "How reducing Nonresponse Rates shapes survey outcomes"
 subtitle: "Findings from a National Telephone Survey"
 author: 
   - Sehar Bajwa
