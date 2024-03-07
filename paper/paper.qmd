@@ -3,7 +3,7 @@ title: "Does reducing Nonresponse rates impact the results"
 subtitle: "Findings from a National Telephone Survey"
 author: 
   - Sehar Bajwa
-thanks: "Code and data are available at: https://github.com/MjChen120/INF312Tutorial8.git"
+thanks: "Code and data are available at: https://github.com/SEHB2012/Nonresponsebias"
 date: today
 date-format: long
 format: pdf
@@ -17,15 +17,13 @@ bibliography: references.bib
 #| message: false
 
 library(tidyverse)
-library(knitr)
-library(dplyr)
 library(ggplot2)
 ```
 
 # Introduction
 Contemporary opinion polls face widespread skepticism regarding their representativeness, with concerns ranging from declining response rates to potential biases related to socio-political factors. Scholars and practitioners express dismay over these issues, while liberals fear the underrepresentation of the marginalized. Moreover, conservatives are suggested to be more reluctant in responding to polls, particularly those perceived as biased. From a methodological standpoint, the pressure for timely results makes achieving high response rates difficult, and is also resposible for the nonrandom selection methods from households, for example choosing respondents from amongst those at home when the interviewer calls. Despite expectations that low response rates and nonrandom methods may result in unrepresentative respondent pools, scientific evidence on these issues remains limited. Nonresponse error, known to be a function of both response rates and differences between respondents and nonrespondents, underscores the need for a nuanced understanding of the potential biases introduced in these time-constrained polling scenarios.
 
-To discuss this phenomena in conjunction with the the non-response rate aspect of the editorial "Special Virtual Issue on Nonresponse Rates and Nonresponse Adjustments" [@OxfordAcademic] with the "Consequences of reducing Nonresponse in a National Telephone Survey" [cite], the statistical programming language `R` [@citeR] with libraries `tidyverse` [@tidyverse], `dplyr` [@dplyr], `knitr` [@knitr], and `ggplot2` [@ggplot2] have been utilised.
+To discuss this phenomena in conjunction with the the non-response rate aspect of the editorial "Special Virtual Issue on Nonresponse Rates and Nonresponse Adjustments" [@OxfordAcademic] with the "Consequences of reducing Nonresponse in a National Telephone Survey" [@phone_survey], the statistical programming language `R` [@citeR] with libraries `tidyverse` and `ggplot2` [@ggplot2] have been utilised.
 
 
 
@@ -39,9 +37,9 @@ The Standard survey was conducted over 5 days with 1000 interviews, every number
 
 The Rigorous Study began at the same time but took 8 days, employing a more exhaustive effort to locate and interview individuals difficult to reach in a short time frame, and those reluctant to participate. Households were sent an advance letter with a $2 bill, and the response rate was 60.6%.
 
-The questionnaire included a wide range of topics often found on opinion polls of the U.S. public. A special effort was made to include items on which we might expect to find differences between amenable and reluctant respondents and between the easy to reach and those who are more difficult to contact (DeMaio 1980; Goudy 1976; Goyder 1987; Stinchcombe, Jones, and Sheatsley 1981).
+The questionnaire included a wide range of topics often found on opinion polls of the U.S. public. A special effort was made to include items on which we might expect to find differences between amenable and reluctant respondents and between the easy to reach and those who are more difficult to contact [@refusals],[@Goyder_1987].
 
-These topics included 
+These topics included:
 
 * 34 Political and social opinion items
 * 5 Electoral behavior measures
@@ -52,7 +50,6 @@ These topics included
 * 4 Items about polling
 * 23 Demographic characteristics
 * 4 Interviewer ratings of the respondent.
-
 
 # Results of the Survey
 
@@ -70,7 +67,6 @@ The results of the survey showed that there was no significant difference amongs
 
 data <- read.csv("/cloud/project/data/percentage_difference.csv")
 
-
 ggplot(data, aes(x = Percentage_point_difference, y = count, fill = as.factor(Percentage_point_difference))) +
   geom_col(color = "black") +
   geom_text(aes(label = count), position = position_stack(vjust = 0.5), size = 3) +
@@ -83,13 +79,15 @@ scale_fill_manual(values = c("#1f78b4", "#33a02c", "#e31a1c", "#ff7f00", "#6a3d9
 
 ```
 
+# Additional Insights 
 
+One aspect the paper discusses after the results are prevailing beliefs about citizens uninterested in politics and current events, who may choose to decline to participate [@Brehm_1993]. Following this reasoning, one might expect that a survey targeting more hesitant respondents would offer a more accurate portrayal of public opinion, potentially reflecting lower overall voter participation, news engagement, and political knowledge. However, the Rigorous and Standard 5-day studies generally exhibited no substantial differences across these dimensions. Both surveys showed similar percentages regarding activities such as reading newspapers, listening to radio and TV news, knowledge of specific political events, and participation in the 1996 elections. Notably, even the Rigorous survey, which had slightly more computer and Internet users, showed differences that narrowly missed statistical significance.
+
+Secondly, willingness to participate in surveys is plausibly related to social integration. On the one hand, people low on social integration tend to be less trusting of others, which might discourage participation in surveys. On the other hand, people high on social integration may engage in many more activities and thus either have less time to participate in surveys or spend less time at home and thus be harder to contact. Based on a comparison of the Standard 5-day and Rigorous surveys, neither theory-at least as stated in these forms-receives much support.
 
 # Conclusion
 
-In conclusion, I have connected the trend of declining survey response rates observed in Feldman et al.'s paper [@feldman] to the issues of low non-response rates and nonresponse bias discussed in the editorial "Special Virtual Issue on Nonresponse Rates and Nonresponse Adjustments" [@OxfordAcademic]. This editorial sheds light on aspects that could potentially explain the trend observed when analyzing the responses collected by Feldman and their colleagues [@feldman] during two time waves. This connection establishes a basis for future research endeavors aimed at exploring the systematic differences between respondents and non-respondents to determine if such distinctions could influence job satisfaction.
-
-\newpage
+ In conclusion, the insights gleaned from this paper on survey participation and its various dimensions contribute valuable perspectives to the broader discourse on nonresponse rates discussed in the editorial "Special Virtual Issue on Nonresponse Rates and Nonresponse Adjustments" [@OxfordAcademic]. The National Telephone Survey paper could be instrumental in stimulating research on which conditions and for which metrics do variations in nonresponse rates indicate divergent nonresponse errors.
 
 # References
 
