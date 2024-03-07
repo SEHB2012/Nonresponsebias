@@ -1,8 +1,8 @@
 ---
-title: "Reflection on Issues of Virtual Nonresponse Rates and Nonresponse Bias"
-subtitle: "Current Issue of Modern Survey Statistics"
+title: "Does reducing Nonresponse rates impact the results"
+subtitle: "Findings from a National Telephone Survey"
 author: 
-  - Mingjia Chen
+  - Sehar Bajwa
 thanks: "Code and data are available at: https://github.com/MjChen120/INF312Tutorial8.git"
 date: today
 date-format: long
@@ -23,50 +23,67 @@ library(ggplot2)
 ```
 
 # Introduction
-Questionnaires or surveys are among the most common methods of data collection in statistical research studies. Sometimes, in order to detect possible patterns, errors, and biases, researchers collect responses from participants more than once. One of the common challenges researchers usually encounter is the non-response rate. As my group members and I discovered during second paper when attempting to replicate the research paper by @feldman, we found a high portion of responses to be null during the second data collection period (@fig-decline-response). This indicates a relatively high non-response rate.
+Contemporary opinion polls face widespread skepticism regarding their representativeness, with concerns ranging from declining response rates to potential biases related to socio-political factors. Scholars and practitioners express dismay over these issues, while liberals fear the underrepresentation of the marginalized. Moreover, conservatives are suggested to be more reluctant in responding to polls, particularly those perceived as biased. From a methodological standpoint, the pressure for timely results makes achieving high response rates difficult, and is also resposible for the nonrandom selection methods from households, for example choosing respondents from amongst those at home when the interviewer calls. Despite expectations that low response rates and nonrandom methods may result in unrepresentative respondent pools, scientific evidence on these issues remains limited. Nonresponse error, known to be a function of both response rates and differences between respondents and nonrespondents, underscores the need for a nuanced understanding of the potential biases introduced in these time-constrained polling scenarios.
 
-To connect the non-response rate aspect of the editorial "Special Virtual Issue on Nonresponse Rates and Nonresponse Adjustments" [@OxfordAcademic] with Feldman and their colleagues’ paper [@feldman], the statistical programming language `R` [@citeR] with libraries `tidyverse` [@tidyverse], `dplyr` [@dplyr], `knitr` [@knitr], and `ggplot2` [@ggplot2] are used for the purpose of this short writing.
+To discuss this phenomena in conjunction with the the non-response rate aspect of the editorial "Special Virtual Issue on Nonresponse Rates and Nonresponse Adjustments" [@OxfordAcademic] with the "Consequences of reducing Nonresponse in a National Telephone Survey" [cite], the statistical programming language `R` [@citeR] with libraries `tidyverse` [@tidyverse], `dplyr` [@dplyr], `knitr` [@knitr], and `ggplot2` [@ggplot2] have been utilised.
+
+
+
+\break
+
+# The National Telephone Survey
+
+To assess the impact of low response rates and nonrandom within-household selection methods, Keeter et Al. undertook an experiment in which identical questionnaires were administered by the same survey firm in two different studies: one using "Rigorous" procedures; the other "Standard" procedures.
+
+The Standard survey was conducted over 5 days with 1000 interviews, every number being called a minimum of 5 times, with one follow up call. The response rate at the end was recorded to be 36%.
+
+The Rigorous Study began at the same time but took 8 days, employing a more exhaustive effort to locate and interview individuals difficult to reach in a short time frame, and those reluctant to participate. Households were sent an advance letter with a $2 bill, and the response rate was 60.6%.
+
+The questionnaire included a wide range of topics often found on opinion polls of the U.S. public. A special effort was made to include items on which we might expect to find differences between amenable and reluctant respondents and between the easy to reach and those who are more difficult to contact (DeMaio 1980; Goudy 1976; Goyder 1987; Stinchcombe, Jones, and Sheatsley 1981).
+
+These topics included 
+
+* 34 Political and social opinion items
+* 5 Electoral behavior measures
+* 8 Media use items
+* 3 Knowledge items
+* 11 Social integration measures (seven objective and four subjective); 
+* 4 Crime-related items
+* 4 Items about polling
+* 23 Demographic characteristics
+* 4 Interviewer ratings of the respondent.
+
+
+# Results of the Survey
+
+The results of the survey showed that there was no significant difference amongst the results of the Standard and Rigorous Surveys. Out of the 91 questions asked, only 14 were significantly different, with a p value o less than 0.05 between the two. The following graph reflects the absolute value in differences in percentage points between the two surveys. As is reflected, they differ on average by 3.01 points(weighted mean), which is quite small.
 
 ```{r}
 #| label: fig-decline-response
-#| fig-cap: Descriptive summary of Job Satisfaction Likert Scale Responses
-#| fig-subcap: ["Job Satisfaction (T1)","Job Satisfaction (T2)"]
-#| layout-ncol: 2
+#| fig-cap: Differences in percentage points between Standard and Rigorous Surveys
+#| layout-ncol: 1
 #| echo: false
 #| warning: false
 #| message: false
 
-data_freq <- read.csv(here::here("data/analysis_data/jobsatT1_data_freq.csv"))           
-# Create the bar chart
-ggplot(data_freq, aes(x = Question, y = Percent, fill = factor(Response))) +
-  geom_bar(stat = "identity") +
-  scale_fill_brewer(palette = "Blues", name = "Response") +
-  labs(x = "Question", y = "Percentage",caption = "Note. 1 = strongly disagree, 7 = strongly agree") +
-  theme_minimal() +
-  theme(legend.position = "bottom")
+# Read in the CSV file
 
-data2_freq <- read.csv(here::here("data/analysis_data/jobsatT2_data_freq.csv")) 
-# Create the bar chart
-ggplot(data2_freq, aes(x = Question, y = Percent, fill = factor(Response))) +
-  geom_bar(stat = "identity") +
-  scale_fill_brewer(palette = "Blues", name = "Response") +
-  labs(x = "Question", y = "Percentage",caption = "Note. 1 = strongly disagree, 7 = strongly agree") +
+data <- read.csv("/cloud/project/data/percentage_difference.csv")
+
+
+ggplot(data, aes(x = Percentage_point_difference, y = count, fill = as.factor(Percentage_point_difference))) +
+  geom_col(color = "black") +
+  geom_text(aes(label = count), position = position_stack(vjust = 0.5), size = 3) +
+  labs(title = "Differences between the Standard and Rigorous Survey", x = "Absolute difference in percentage points", y = "Count of occurrences") +
+scale_fill_manual(values = c("#1f78b4", "#33a02c", "#e31a1c", "#ff7f00", "#6a3d9a", "#a6cee3", "#b2df8a", "#fb9a99"))+
   theme_minimal() +
-  theme(legend.position = "bottom")
+  theme(panel.grid.major = element_line(color = "gray", linetype = "dashed"),
+        panel.grid.minor = element_blank(),
+        legend.position = "none") 
 
 ```
 
-\break
 
-According to @Williams_Brick_2018, response rates are falling across all modes of data collection overall. Response rates to web modes, as reported in the study, are lower than those for other modes of data collection. The paper also suggests that this trend will likely continue through 2022 and beyond. Since the data set for Study 2 of @feldman was collected by using an online survey for workers on the diverse online labor market MTurk, the trend we detected in terms of the decrease in response rate at the second round of response collection could be explained by the fact that the response rates declining, especially online, for the recent years.
-
-Although the non-responsive rate declines significantly in online data collecting, are there any other possible factors that contributes to the low response rates?
-
-# Nonresponse bias
-
-The result of Groves and Peytcheva's research [@nonresponseBias] shows that low response rates are not necessarily associated with non-response bias. Non-responsive bias occurs when participants are unwilling or unable to respond to some survey questions or an entire survey. Low response rates in selected sub domains, although association does not always hold, are usually used as indicators of systematic differences between participants who responded and who did not on key estimates [@nonresponseBias]. 
-
-From the result from @nonresponseBias, we could hypothesize that the increase in non-response rate indicate a systematic difference between the respondents and non-respondents. For instance, some workers could stopped using MTurk by the time Feldman and their colleague started second round of surveys. The systematic difference could be that some of the workers no longer used the platform due to the fact that they did not find it useful.  
 
 # Conclusion
 
